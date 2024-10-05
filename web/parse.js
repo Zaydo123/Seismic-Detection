@@ -7,12 +7,23 @@ const { Pool } = pkg; // Destructuring Pool from the imported package
 
 // Set up PostgreSQL connection pool
 const pool = new Pool({
-  user: POSTGRES_HOSTNAME,
-  host: 'localhost',
-  database: POSTGRES_DB,
-  password: POSTGRES_PASSWORD,
-  port: POSTGRES_PORT,
+  user: "postgres",
+  host: "10.1.116.93",
+  database: "postgres",
+  password: "postgres", // Explicitly ensuring this is a string
+  port: 5432,
 });
+
+// Simple connection test
+(async () => {
+  try {
+    const client = await pool.connect();
+    console.log('Successfully connected to the database');
+    client.release();
+  } catch (err) {
+    console.error('Database connection error:', err);
+  }
+})();
 
 // Function to read CSV, parse, and insert data into the database
 async function parseAndInsertCsv(filePath) {
