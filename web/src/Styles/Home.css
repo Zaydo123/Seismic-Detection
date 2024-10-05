@@ -1,0 +1,86 @@
+/* Import Poppins font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+/* Basic reset and styling */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif; /* Apply Poppins font */
+    overflow-x: hidden;
+}
+
+/* Container for the video background */
+.home-container {
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+    color: white;
+    display: cover;
+}
+
+/* Navbar styling */
+.navbar {
+    display: flex;
+    justify-content: flex-end;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
+}
+
+.nav-link {
+    margin: 0 15px;
+    color: #61dafb;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 400; /* Regular weight for nav links */
+    transition: color 0.3s;
+    line-height: 1.5; /* Adjust line-height for better text flow */
+    border: 2px solid #61dafb; /* Add border around nav links */
+    padding: 5px 10px; /* Add padding inside the border */
+    border-radius: 5px; /* Optional: Add rounded corners */
+}
+
+.nav-link:hover {
+    color: #aaf;
+    border-color: #aaf; /* Change border color on hover */
+}
+
+/* Main content styling */
+.content {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.title {
+    font-size: 50px;
+    font-weight: 700; /* Bold weight for the title */
+    animation: lightTransition 5s infinite; /* Apply the animation */
+    text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000; /* Initial text shadow */
+    display: cover;
+}
+
+/* Keyframes for light transition animation */
+@keyframes lightTransition {
+    0% {
+        text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000; /* Red */
+    }
+    25% {
+        text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff; /* Purple */
+    }
+    50% {
+        text-shadow: 0 0 10px #0000ff, 0 0 20px #0000ff; /* Blue */
+    }
+    75% {
+        text-shadow: 0 0 10px #61dafb, 0 0 20px #61dafb; /* Light Blue */
+    }
+    100% {
+        text-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000; /* Back to Red */
+    }
+}
+
+.description {
+    font-size: 20px;
+    font-weight: 300; /* Lighter weight for the description */
+    color: #ddd;
+}
