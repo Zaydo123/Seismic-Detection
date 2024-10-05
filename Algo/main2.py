@@ -4,7 +4,6 @@ from obspy import read
 from datetime import datetime, timedelta
 import matplotlib.pyplot as plt
 import os
-from obspy.core import read
 
 cat_directory = '../data/lunar/training/catalogs/'
 cat_file = cat_directory + 'apollo12_catalog_GradeA_final.csv'
@@ -19,6 +18,7 @@ arrival_time
 arrival_time_rel = row['time_rel(sec)']
 arrival_time_rel
 
+# Let's also get the name of the file
 test_filename = row.filename
 test_filename
 
@@ -29,6 +29,10 @@ data_cat
 
 csv_times = np.array(data_cat['time_rel(sec)'].tolist())
 csv_data = np.array(data_cat['velocity(m/s)'].tolist())
+
+mean = np.mean(csv_data) 
+std_dev = np.std(csv_data) 
+csv_data_standardized = (csv_data - mean) / std_dev
 
 
 fig,ax = plt.subplots(1,1,figsize=(10,3))

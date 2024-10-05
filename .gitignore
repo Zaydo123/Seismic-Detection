@@ -1,3 +1,7 @@
 *.csv
 *.mseed
 .env
+.venv
+xa.*
+evid*.png
+.DS_Store
