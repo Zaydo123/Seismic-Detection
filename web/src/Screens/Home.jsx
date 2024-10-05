@@ -1,16 +1,21 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import '../Styles/Home.css'; // Import the CSS file
 
 const Home = () => {
     return (
-        <div>
-            <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '10px' }}>
-                <Link to="/files" style={{ margin: '0 10px' }}>Files</Link>
-                <Link to="/challenge" style={{ margin: '0 10px' }}>Challenge</Link>
-                <Link to="/team" style={{ margin: '0 10px' }}>Team</Link>
+        <div className="home-container">
+
+            <div className="navbar">
+                <Link to="/files" className="nav-link">Files</Link>
+                <Link to="/challenge" className="nav-link">Challenge</Link>
+                <Link to="/team" className="nav-link">Team</Link>
             </div>
-            <h1>Welcome to the Home Page</h1>
-            <p>This is the home page content.</p>
+
+            <div className="content">
+                <h1 className="title">Welcome to</h1>
+                <h1 className="title">UIC's Greatest</h1>
+            </div>
         </div>
     );
 };

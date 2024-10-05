@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import '../Styles/Home.css'; // Import the CSS file
 
 const Files = () => {
     const [file, setFile] = useState(null);
+    const [recentUploads, setRecentUploads] = useState([]);
+    const [selectedFile, setSelectedFile] = useState('');
 
     const handleFileChange = (event) => {
         setFile(event.target.files[0]);
@@ -24,6 +28,7 @@ const Files = () => {
 
             if (response.ok) {
                 alert('File uploaded successfully');
+                setRecentUploads([...recentUploads, file.name]);
             } else {
                 alert('File upload failed');
             }
@@ -33,12 +38,34 @@ const Files = () => {
         }
     };
 
+    const handleShowRecentUploads = () => {
+        // This function is now redundant as recentUploads is already updated on upload
+    };
+
+    const handleSelectFile = (event) => {
+        setSelectedFile(event.target.value);
+    };
+
     return (
-        <div>
-            <h1>Files Screen</h1>
-            <p>This is the Files screen.</p>
-            <input type="file" accept=".csv" onChange={handleFileChange} />
-            <button onClick={handleFileUpload}>Upload</button>
+        <div className="home-container"> {/* Apply the same container class */}
+            <div className="navbar">
+                <Link to="/" className="nav-link">Home</Link>
+                <Link to="/challenge" className="nav-link">Challenge</Link>
+                <Link to="/team" className="nav-link">Team</Link>
+            </div>
+
+            <div className="content">
+                <h1 className="title">Files Upload</h1>
+                <input type="file" accept=".csv" onChange={handleFileChange} />
+                <button onClick={handleFileUpload}>Upload</button>
+                <select onChange={handleSelectFile}>
+                    <option value="">Select a recent upload</option>
+                    {recentUploads.map((upload, index) => (
+                        <option key={index} value={upload}>{upload}</option>
+                    ))}
+                </select>
+                {selectedFile && <p>Selected File: {selectedFile}</p>}
+            </div>
         </div>
     );
 };
