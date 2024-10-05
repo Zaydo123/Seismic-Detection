@@ -21,6 +21,7 @@ class Postgres:
             port=self.port
         )
         self.cur = self.conn.cursor()
+        self._startup_script()
 
     def close(self):
         self.cur.close()
@@ -31,3 +32,5 @@ class Postgres:
             self.cur.execute(f.read())
         self.conn.commit()
 
+    def _startup_script(self):
+        self.execute("CREATE_TABLES.sql")

@@ -3,6 +3,9 @@ services:
     image: redis:alpine
     container_name: redis
     command: redis-server
+    volumes:
+      - redis:/var/lib/redis
+      - redis-config:/usr/local/etc/redis/redis.conf
     ports:
       - ${REDIS_PORT}:${REDIS_PORT}
 
@@ -15,6 +18,10 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - 5432:5432
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+    
 
 volumes:
   redis:
