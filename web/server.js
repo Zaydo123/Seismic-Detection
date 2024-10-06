@@ -16,7 +16,7 @@ dotenv.config({
 const { Pool } = pkg; // Destructuring Pool from the imported package
 
 const app = express();
-const port = 5000;
+const port = 5001;
 
 // Enable CORS for all origins
 app.use(cors());
@@ -147,6 +147,7 @@ app.get('/api/graph-data', async (req, res) => {
     // Parse JSON content for each row
     const formattedData = result.rows.map(row => {
       // Parse JSON content stored in the 'content' column
+      console.log(row)
       const content = JSON.parse(row.content);
 
 

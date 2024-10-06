@@ -12,7 +12,7 @@ const Files = () => {
     useEffect(() => {
         const fetchUploadedFiles = async () => {
             try {
-                const response = await fetch('http://localhost:5000/files');
+                const response = await fetch('http://localhost:5001/files');
                 if (response.ok) {
                     const files = await response.json();
                     setRecentUploads(files);
@@ -41,7 +41,7 @@ const Files = () => {
         formData.append('file', file);
 
         try {
-            const response = await fetch('http://localhost:5000/upload', {
+            const response = await fetch('http://localhost:5001/upload', {
                 method: 'POST',
                 body: formData,
             });
@@ -65,7 +65,7 @@ const Files = () => {
 
     const handleDelete = async (index, fileId) => {
         try {
-            const response = await fetch(`http://localhost:5000/files/${fileId}`, {
+            const response = await fetch(`http://localhost:5001/files/${fileId}`, {
                 method: 'DELETE',
             });
     

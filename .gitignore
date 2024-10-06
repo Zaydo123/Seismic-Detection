@@ -5,3 +5,8 @@
 xa.*
 evid*.png
 .DS_Store
+__pycache__/
+*.pyc
+*.pyo
+*.venv
+*.pyc
