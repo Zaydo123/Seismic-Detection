@@ -31,7 +31,7 @@ const AboutChallenge = () => {
             <p>
                 Watch out for missing data and glitches, as these are common in planetary data. Make sure to use open-source code for your project so others can learn from your approach!
             </p>
-            
+
             {/* <Line /> */}
 
             <h1>How are we Approaching</h1>

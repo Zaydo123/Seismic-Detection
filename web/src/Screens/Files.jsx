@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../Styles/Home.css'; // Import the CSS file
+// import ParticlesComponent from '../Components/ParticlesComponent.jsx';
 
 const Files = () => {
     const [file, setFile] = useState(null);
@@ -10,7 +11,7 @@ const Files = () => {
     const handleFileChange = (event) => {
         setFile(event.target.files[0]);
     };
-
+// 
     const handleFileUpload = async () => {
         if (!file) {
             alert('Please select a file first.');
@@ -38,16 +39,13 @@ const Files = () => {
         }
     };
 
-    const handleShowRecentUploads = () => {
-        // This function is now redundant as recentUploads is already updated on upload
-    };
-
     const handleSelectFile = (event) => {
         setSelectedFile(event.target.value);
     };
 
     return (
-        <div className="home-container"> {/* Apply the same container class */}
+        <div className="home-container">
+            {/* <ParticlesComponent /> */}
             <div className="navbar">
                 <Link to="/" className="nav-link">Home</Link>
                 <Link to="/challenge" className="nav-link">Challenge</Link>
@@ -56,15 +54,18 @@ const Files = () => {
 
             <div className="content">
                 <h1 className="title">Files Upload</h1>
-                <input type="file" accept=".csv" onChange={handleFileChange} />
-                <button onClick={handleFileUpload}>Upload</button>
-                <select onChange={handleSelectFile}>
-                    <option value="">Select a recent upload</option>
-                    {recentUploads.map((upload, index) => (
-                        <option key={index} value={upload}>{upload}</option>
-                    ))}
-                </select>
-                {selectedFile && <p>Selected File: {selectedFile}</p>}
+                <div className="upload-section">
+                    <label htmlFor="file-upload" className="label-file">Choose File</label>
+                    <input id="file-upload" type="file" accept=".csv" onChange={handleFileChange} />
+                    <button onClick={handleFileUpload}>Upload</button>
+                    <select onChange={handleSelectFile}>
+                        <option value="">Select a recent upload</option>
+                        {recentUploads.map((upload, index) => (
+                            <option key={index} value={upload}>{upload}</option>
+                        ))}
+                    </select>
+                    {selectedFile && <p>Selected File: {selectedFile}</p>}
+                </div>
             </div>
         </div>
     );
