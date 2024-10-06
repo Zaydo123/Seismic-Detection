@@ -4,8 +4,14 @@ import path from 'path';
 import fs from 'fs';
 import pkg from 'pg'; // Importing the CommonJS module as a default import
 import csv from 'csv-parser';
+import dotenv from 'dotenv';
 import cors from 'cors';
-import { createClient } from 'redis';
+import { sendUpdateToAnalyzer } from './redis.js';
+
+let __dirname = path.resolve(path.dirname(''));
+dotenv.config({
+  path: path.resolve(__dirname, '../.env'),
+})
 
 const { Pool } = pkg; // Destructuring Pool from the imported package
 
@@ -17,12 +23,13 @@ app.use(cors());
 
 // Set up PostgreSQL connection pool
 const pool = new Pool({
-  user: "postgres",
-  host: "172.23.96.1",
-  database: "postgres",
-  password: "postgres",
+  user: process.env.POSTGRES_USER,
+  host: process.env.POSTGRES_HOSTNAME,
+  database: process.env.POSTGRES_DB,
+  password: process.env.POSTGRES_PASSWORD,
   port: 5432,
 });
+
 
 // Set up storage with multer
 const storage = multer.diskStorage({
@@ -53,9 +60,9 @@ async function parseAndInsertCsv(filePath) {
       .pipe(csv())
       .on('data', (row) => {
         rows.push({
-          time_abs: row['time_abs(%Y-%m-%dT%H:%M:%S.%f)'],
-          time_rel: parseFloat(row['time_rel(sec)']),
-          velocity: parseFloat(row['velocity(m/s)']),
+          'time_abs(%Y-%m-%dT%H:%M:%S.%f)': row['time_abs(%Y-%m-%dT%H:%M:%S.%f)'],
+          'time_rel(sec)': parseFloat(row['time_rel(sec)']),
+          'velocity(m/s)': parseFloat(row['velocity(m/s)']),
         });
       })
       .on('end', async () => {
@@ -63,20 +70,37 @@ async function parseAndInsertCsv(filePath) {
 
         try {
           const client = await pool.connect();
+          
+          // Prepare the values to be inserted
+          const nameValue = filename;
+          const contentValue = JSON.stringify(rows);
+          const nowValue = new Date().toISOString(); // Equivalent to NOW() in JavaScript
+        
+          // Log the values
+          console.log('Value for $1 (name):', nameValue);
+          console.log('Value for $2 (content):', contentValue);
+          console.log('Value for NOW() (created_at):', nowValue);
+        
           const insertQuery = `
-            INSERT INTO public.files (name, content, created_at) 
+            INSERT INTO public.files (name, content, created_at)  
             VALUES ($1, $2, NOW()) RETURNING id, name, created_at;
           `;
-          const result = await client.query(insertQuery, [filename, JSON.stringify(rows)]);
-
+          const result = await client.query(insertQuery, [nameValue, contentValue]);
+        
+          const id = await client.query('SELECT id FROM public.files WHERE name = $1 ORDER BY created_at DESC LIMIT 1', [nameValue]);
+          console.log('Inserted file ID:', id.rows[0].id);
           client.release();
+        
+          console.log('Triggering update to analyzer...');
+          await sendUpdateToAnalyzer(id.rows[0].id);
           console.log('Data successfully inserted into the database.');
+        
           resolve(result.rows[0]); // Resolve with the inserted row's metadata
         } catch (err) {
           console.error('Error inserting data into the database:', err);
           reject(err); // Reject the promise with the error
         }
-      })
+        })
       .on('error', (err) => {
         console.error('Error reading the CSV file:', err);
         reject(err); // Reject the promise with the error
@@ -125,14 +149,7 @@ app.get('/api/graph-data', async (req, res) => {
       // Parse JSON content stored in the 'content' column
       const content = JSON.parse(row.content);
 
-      // Log each data point along with other details
-      console.log(`Name: ${row.name}`);
-      console.log(`Created At: ${row.created_at}`);
-      console.log(`Start Time: ${row.start_time}`);
 
-      content.forEach(item => {
-        console.log(`Relative Time: ${item.time_rel}, Absolute Time: ${item.time_abs}, Velocity: ${item.velocity}`);
-      });
 
       return {
         name: row.name,
