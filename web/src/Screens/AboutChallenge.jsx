@@ -1,5 +1,5 @@
 import React from 'react';
-import { Line } from '../Components/Line.js';
+// import { Line } from '../Components/Line.js';
 
 const AboutChallenge = () => {
     return (
@@ -32,7 +32,7 @@ const AboutChallenge = () => {
                 Watch out for missing data and glitches, as these are common in planetary data. Make sure to use open-source code for your project so others can learn from your approach!
             </p>
             
-            <Line />
+            {/* <Line /> */}
 
             <h1>How are we Approaching</h1>
         </div>
