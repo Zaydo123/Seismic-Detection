@@ -21,34 +21,32 @@ const ChartComponent = () => {
           // Extract relative time and velocity for the chart
           const timeLabels = data.map(item => item.time_rel);
           const velocities = data.map(item => item.velocity);
-
-          // Find the index of the start time in the relative time array
-          const startTimeIndex = timeLabels.indexOf(parseFloat(start_time)); // Assuming `start_time` is in seconds
-
+          const sampledTimeLabels = timeLabels.filter((_, index) => index % 10 === 0);
+          const sampledVelocities = velocities.filter((_, index) => index % 10 === 0);  
+          const startTimeIndex = timeLabels.findIndex(time => time === parseFloat(start_time)); // Ensures precise matching
+          
           // Set the chart data
           setChartData({
-            labels: timeLabels,
+            labels: sampledTimeLabels,
             datasets: [
               {
                 label: `Velocity vs Relative Time (${name})`,
-                data: velocities,
+                data: sampledVelocities,
                 fill: false,
                 borderColor: 'rgba(75,192,192,1)',
                 tension: 0.4, // Smoothen the line
                 pointBackgroundColor: (context) => {
-                  // Highlight the start time point with a red color
                   const index = context.dataIndex;
                   return index === startTimeIndex ? 'red' : 'rgba(75,192,192,1)';
                 },
                 pointRadius: (context) => {
-                  // Make the start time point larger
                   const index = context.dataIndex;
-                  return index === startTimeIndex ? 12 : 3; // Larger point for start time
+                  return index === startTimeIndex ? 6 : 3; // Slightly smaller point for the start time
                 },
               },
             ],
           });
-
+          
           // Set seismic events data for the table
           setSeismicEvents(graphData);
         }
