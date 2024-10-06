@@ -4,6 +4,7 @@ import Home from '../Screens/Home.jsx';
 import FilesPage from '../Screens/Files.jsx';
 import ChallengePage from '../Screens/AboutChallenge.jsx';
 import AboutTeam from '../Screens/AboutTeam.jsx';
+import Plot from '../Screens/Plot.jsx';
 
 const RootStack = () => {
     return (
@@ -13,6 +14,7 @@ const RootStack = () => {
                 <Route path="/files" element={<FilesPage />} />
                 <Route path="/challenge" element={<ChallengePage />} />
                 <Route path="/team" element={<AboutTeam />} />
+                <Route path="/plot" element={<Plot />} />
             </Routes>
         </Router>
     );

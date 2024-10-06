@@ -17,7 +17,7 @@ app.use(cors());
 // Set up PostgreSQL connection pool
 const pool = new Pool({
   user: "postgres",
-  host: "10.1.116.93",
+  host: "10.40.223.199",
   database: "postgres",
   password: "postgres",
   port: 5432,
@@ -25,7 +25,7 @@ const pool = new Pool({
 
 // Redis 
 const redisClient = await createClient({
-    host: "10.1.116.93",
+    host: "10.40.211.28",
     database: 0,
     port: 6379,
 });
@@ -129,6 +129,56 @@ app.post('/upload', upload.single('file'), async (req, res) => {
 // Define a root route (optional)
 app.get('/', (req, res) => {
   res.send('Welcome to the File Upload Server');
+});
+
+// Define a new route to retrieve data for graphing
+// Define a new route to retrieve data for graphing
+// Define a new route to retrieve data for graphing
+app.get('/api/graph-data', async (req, res) => {
+  try {
+    // Query to select the necessary data from the database
+    const query = `
+      SELECT 
+        files.name, 
+        files.content, 
+        files.created_at, 
+        detections.start_time 
+      FROM 
+        files 
+      JOIN 
+        detections ON files.id = detections.file;
+    `;
+
+    const result = await pool.query(query);
+
+    // Parse JSON content for each row
+    const formattedData = result.rows.map(row => {
+      // Parse JSON content stored in the 'content' column
+      const content = JSON.parse(row.content);
+
+      // Log each data point along with other details
+      console.log(`Name: ${row.name}`);
+      console.log(`Created At: ${row.created_at}`);
+      console.log(`Start Time: ${row.start_time}`);
+
+      content.forEach(item => {
+        console.log(`Relative Time: ${item.time_rel}, Absolute Time: ${item.time_abs}, Velocity: ${item.velocity}`);
+      });
+
+      return {
+        name: row.name,
+        created_at: row.created_at,
+        start_time: row.start_time,
+        data: content, // Array of objects with velocity, time_abs, and time_rel
+      };
+    });
+
+    // Send the formatted data as a JSON response
+    res.json(formattedData);
+  } catch (error) {
+    console.error('Error fetching data for graphing:', error);
+    res.status(500).send('Internal Server Error while fetching data for graphing.');
+  }
 });
 
 // Start the server
