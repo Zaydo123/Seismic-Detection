@@ -1,9 +1,15 @@
-import { useGLTF } from '@react-three/drei';
+// Model.jsx
+import React from 'react';
+import { useGLTF, Center } from '@react-three/drei';
 
 const Model = () => {
-    const { scene } = useGLTF('/path/to/model.glb'); // Adjust the path to your model
-    return <primitive object={scene} scale={0.5} />;
+    const { scene } = useGLTF('/assets/scene.gltf');
+
+    return (
+        <Center>
+            <primitive object={scene} scale={0.5} />
+        </Center>
+    );
 };
 
-// Inside the Canvas component in Home
-
+export default Model;

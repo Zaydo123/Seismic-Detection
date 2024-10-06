@@ -1,63 +1,117 @@
 import React, { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import Chart from 'chart.js/auto';
-import Papa from 'papaparse';
+import axios from 'axios';
 
 const ChartComponent = () => {
   const [chartData, setChartData] = useState(null);
+  const [seismicEvents, setSeismicEvents] = useState([]);
 
   useEffect(() => {
-    // Load and parse the full CSV data
-    fetch('../../dummy_data/1.csv')
-      .then(response => response.text())
-      .then(data => {
-        const parsedData = Papa.parse(data, { header: true }).data;
+    // Fetch data from the API endpoint
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/graph-data');
+        const graphData = response.data;
 
-        // Sample every 10th row for plotting
-        const sampledData = parsedData.filter((_, index) => index % 10 === 0);
+        // Assuming we want to plot data from the first file in the response
+        if (graphData.length > 0) {
+          const { data, start_time, name, created_at } = graphData[0]; // Adjust if needed for specific file or iteration
 
-        const timeLabels = sampledData.map(row => row['time_rel(sec)']);
-        const velocities = sampledData.map(row => parseFloat(row['velocity(m/s)']));
+          // Extract relative time and velocity for the chart
+          const timeLabels = data.map(item => item.time_rel);
+          const velocities = data.map(item => item.velocity);
 
-        setChartData({
-          labels: timeLabels,
-          datasets: [
-            {
-              label: 'Velocity',
-              data: velocities,
-              fill: false,
-              borderColor: 'rgba(75,192,192,1)',
-              tension: 0.1,
-            },
-          ],
-        });
-      });
+          // Find the index of the start time in the relative time array
+          const startTimeIndex = timeLabels.indexOf(parseFloat(start_time)); // Assuming `start_time` is in seconds
+
+          // Set the chart data
+          setChartData({
+            labels: timeLabels,
+            datasets: [
+              {
+                label: `Velocity vs Relative Time (${name})`,
+                data: velocities,
+                fill: false,
+                borderColor: 'rgba(75,192,192,1)',
+                tension: 0.4, // Smoothen the line
+                pointBackgroundColor: (context) => {
+                  // Highlight the start time point with a red color
+                  const index = context.dataIndex;
+                  return index === startTimeIndex ? 'red' : 'rgba(75,192,192,1)';
+                },
+                pointRadius: (context) => {
+                  // Make the start time point larger
+                  const index = context.dataIndex;
+                  return index === startTimeIndex ? 12 : 3; // Larger point for start time
+                },
+              },
+            ],
+          });
+
+          // Set seismic events data for the table
+          setSeismicEvents(graphData);
+        }
+      } catch (error) {
+        console.error('Error fetching graph data:', error);
+      }
+    };
+
+    fetchData();
   }, []);
 
   if (!chartData) return <div>Loading...</div>;
 
   return (
-    <div style={{ width: '80vw', height: '60vh', margin: '0 auto' }}>
-      <Line
-        data={chartData}
-        options={{
-          maintainAspectRatio: false,
-          scales: {
-            x: {
-              title: {
-                display: true,
-                text: 'Time (s)',
+    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+      {/* Chart Section */}
+      <div style={{ flex: 2, marginRight: '20px' }}>
+        <Line
+          data={chartData}
+          options={{
+            responsive: true,
+            scales: {
+              x: {
+                title: {
+                  display: true,
+                  text: 'Relative Time (s)',
+                  font: { size: 16 },
+                },
+              },
+              y: {
+                title: {
+                  display: true,
+                  text: 'Velocity (m/s)',
+                  font: { size: 16 },
+                },
               },
             },
-            y: {
-              title: {
-                display: true,
-                text: 'Velocity (m/s)',
-              },
-            },
-          },
-        }}
-      />
+          }}
+        />
+      </div>
+
+      {/* Table Section */}
+      <div style={{ flex: 1 }}>
+        <h3>Seismic Events</h3>
+        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '18px' }}>
+          <thead>
+            <tr>
+              <th style={{ border: '1px solid #ddd', padding: '12px', borderRadius: '5px' }}>Name</th>
+              <th style={{ border: '1px solid #ddd', padding: '12px', borderRadius: '5px' }}>Created At</th>
+              <th style={{ border: '1px solid #ddd', padding: '12px', borderRadius: '5px' }}>Start Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            {seismicEvents.map((event, index) => (
+              <tr key={index}>
+                <td style={{ border: '1px solid #ddd', padding: '12px', borderRadius: '5px' }}>{event.name}</td>
+                <td style={{ border: '1px solid #ddd', padding: '12px', borderRadius: '5px' }}>{new Date(event.created_at).toLocaleString()}</td>
+                <td style={{ border: '1px solid #ddd', padding: '12px', borderRadius: '5px' }}>{event.start_time}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

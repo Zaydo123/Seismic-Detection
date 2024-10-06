@@ -189,15 +189,6 @@ body, html {
     box-shadow: 0 6px 15px rgba(36, 198, 220, 0.6);
 }
 
-.three-d-container {
-    width: 100%;
-    height: 400px; /* Set height for the 3D canvas */
-    margin-top: 2rem; /* Add some spacing from the content */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #111; /* Optional: Dark background to highlight the model */
-}
 
 /* Modal styles */
 .modal-overlay {
