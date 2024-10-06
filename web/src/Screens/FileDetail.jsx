@@ -11,7 +11,7 @@ const FileDetail = () => {
 
     return (
         <div className="file-detail-container">
-            <h1>Details for: {fileName}</h1>
+            <h2>DETAILS FOR: {fileName}</h2>
             <button onClick={() => navigate('/files')} className="back-button">Back</button>
             <ChartComponent />
         </div>
