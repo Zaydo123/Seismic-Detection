@@ -4,7 +4,7 @@ import Home from '../Screens/Home.jsx';
 import FilesPage from '../Screens/Files.jsx';
 import ChallengePage from '../Screens/AboutChallenge.jsx';
 import AboutTeam from '../Screens/AboutTeam.jsx';
-import Plot from '../Screens/Plot.jsx';
+import FileDetail from '../Screens/FileDetail.jsx'; // Import the new FileDetail component
 
 const RootStack = () => {
     return (
@@ -12,9 +12,9 @@ const RootStack = () => {
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/files" element={<FilesPage />} />
+                <Route path="/files/:fileName" element={<FileDetail />} /> {/* Add this line */}
                 <Route path="/challenge" element={<ChallengePage />} />
                 <Route path="/team" element={<AboutTeam />} />
-                <Route path="/plot" element={<Plot />} />
             </Routes>
         </Router>
     );

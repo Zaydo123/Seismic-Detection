@@ -8,20 +8,37 @@
     box-sizing: border-box;
 }
 
-body {
+body, html {
     font-family: 'Poppins', sans-serif;
-    background-color: #fff; /* Black background */
+    background-color: #000; /* Black background */
     color: #fff;
-    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    overflow-y: auto; /* Allow vertical scrolling */
     position: relative;
 }
 
+/* Container styles */
 .home-container {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center content horizontally */
     min-height: 100vh;
     padding-top: 3rem; /* Space for the navbar */
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    width: 100%; /* Ensure it takes the full width of the container */
+    min-height: 100vh; /* Make the content fill the viewport height */
+    padding-top: 5rem; /* Move content down */
+}
+
+/* Centered content for title and upload button */
+.centered-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 /* Navbar styles */
@@ -65,14 +82,14 @@ body {
     width: 100%;
 }
 
-/* Header styles */
-.header {
-    margin-top: 4rem; /* Additional space below the navbar */
+/* Title styles */
+.title {
     font-size: 4rem;
     text-align: center;
     color: #fff;
     text-shadow: 0 0 20px rgba(255, 75, 43, 0.7);
     animation: pulseGlow 2s infinite;
+    margin-bottom: 2rem;
 }
 
 @keyframes pulseGlow {
@@ -87,22 +104,8 @@ body {
     }
 }
 
-/* Upload section styles */
-.upload-section {
-    background: rgba(0, 0, 0, 0.7);
-    padding: 2.5rem 3.5rem;
-    border-radius: 20px;
-    box-shadow: 0 8px 16px rgba(255, 75, 43, 0.3);
-    max-width: 500px;
-    width: 100%;
-    position: relative;
-    overflow: hidden;
-    margin-top: 2rem; /* Spacing below the header */
-}
-
-/* Other styles (unchanged) */
-.label-file {
-    display: inline-block;
+/* Upload button */
+.upload-button {
     background: linear-gradient(45deg, #ff4b2b, #ff416c);
     color: #fff;
     padding: 0.9rem 1.8rem;
@@ -115,81 +118,155 @@ body {
     transition: transform 0.3s, box-shadow 0.3s;
 }
 
-.label-file:hover {
+.upload-button:hover {
     transform: translateY(-8px);
     box-shadow: 0 8px 20px rgba(255, 75, 43, 0.6);
 }
 
-input[type="file"] {
-    display: none;
+/* Uploaded files styles */
+.uploaded-files {
+    margin-top: 2rem;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the boxes */
 }
 
-button {
-    display: inline-block;
-    background: linear-gradient(45deg, #24c6dc, #514a9d);
+.file-box {
+    background-color: #333;
+    width: 90%; /* Make the file box wider */
+    max-width: 1200px; /* Limit maximum width */
+    padding: 1.5rem 2rem; /* Add more padding */
+    margin: 1rem 0; /* Increase vertical spacing */
+    border-radius: 15px; /* Rounder corners */
     color: #fff;
-    border: none;
-    padding: 0.9rem 1.8rem;
-    font-size: 1.1rem;
-    font-weight: 600;
-    cursor: pointer;
-    border-radius: 50px;
-    margin-bottom: 1.5rem;
-    margin-left: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6), 0 0 15px rgba(255, 75, 43, 0.7);
+    border: 2px solid rgba(255, 75, 43, 0.5);
     transition: transform 0.3s, box-shadow 0.3s;
 }
 
-button:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 8px 20px rgba(36, 198, 220, 0.6);
+.file-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.8), 0 0 25px rgba(255, 75, 43, 1);
 }
 
-select {
-    width: 100%;
-    padding: 0.9rem;
-    font-size: 1rem;
-    margin-bottom: 1.5rem;
+/* File info and buttons */
+.file-info {
+    display: flex;
+    flex-direction: column;
+    flex: 1; /* Allow the file info to take up available space */
+}
+
+.file-info p {
+    font-size: 1.2rem; /* Larger font size */
+    margin: 0.5rem 0; /* Add some spacing between lines */
+    line-height: 1.4; /* Increase line height for readability */
+}
+
+.file-box-buttons {
+    display: flex;
+}
+
+.file-box-buttons button {
+    background: linear-gradient(45deg, #24c6dc, #514a9d);
+    color: #fff;
     border: none;
+    padding: 0.7rem 1.5rem; /* Adjust padding for a better button size */
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-left: 1rem; /* Add more spacing between buttons */
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.file-box-buttons button:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(36, 198, 220, 0.6);
+}
+
+.three-d-container {
+    width: 100%;
+    height: 400px; /* Set height for the 3D canvas */
+    margin-top: 2rem; /* Add some spacing from the content */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #111; /* Optional: Dark background to highlight the model */
+}
+
+/* Modal styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.75);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: #222;
+    padding: 2rem;
     border-radius: 10px;
-    background-color: rgba(255, 255, 255, 0.1);
+    text-align: center;
     color: #fff;
-    backdrop-filter: blur(5px);
-    position: relative;
-    appearance: none;
+    width: 90%;
+    max-width: 500px;
 }
 
-select:focus {
-    outline: none;
-    box-shadow: 0 0 10px rgba(255, 75, 43, 0.5);
+.modal-content h2 {
+    margin-bottom: 1rem;
 }
 
-select option {
-    background-color: #000;
+.modal-content input[type="file"] {
+    margin-bottom: 1rem;
+}
+
+.modal-content button {
+    margin: 0.5rem;
+    padding: 0.7rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.modal-content button:first-of-type {
+    background-color: #28a745; /* Green */
     color: #fff;
 }
 
-p {
-    font-size: 1.3rem;
+.modal-content button:last-of-type {
+    background-color: #dc3545; /* Red */
     color: #fff;
-    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7);
-    animation: fadeIn 2s ease-in;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
+/* Media queries for responsiveness */
 @media (max-width: 600px) {
-    .upload-section {
-        padding: 2rem 2.5rem;
+    .title {
+        font-size: 3rem;
     }
 
     .nav-link {
         margin: 0 0.5rem;
     }
 
-    .header {
-        font-size: 3rem;
+    .file-box {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .file-box-buttons {
+        margin-top: 1rem;
+        width: 100%;
+        justify-content: flex-end;
     }
 }

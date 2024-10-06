@@ -7,8 +7,8 @@ import ChartComponent from './Components/ChartComponent.jsx';
 
 function App() {
   return (
-    // <RootStack />
-    <ChartComponent />
+    <RootStack />
+    // <ChartComponent />
   )
 }
 
