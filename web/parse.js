@@ -8,7 +8,7 @@ const { Pool } = pkg; // Destructuring Pool from the imported package
 // Set up PostgreSQL connection pool
 const pool = new Pool({
   user: "postgres",
-  host: "10.40.223.199",
+  host: "127.0.0.1",
   database: "postgres",
   password: "postgres", // Explicitly ensuring this is a string
   port: 5432,

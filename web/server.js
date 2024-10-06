@@ -10,7 +10,7 @@ import { createClient } from 'redis';
 const { Pool } = pkg; // Destructuring Pool from the imported package
 
 const app = express();
-const port = 5000;
+const port = 5001;
 
 // Enable CORS for all origins
 app.use(cors());
@@ -18,7 +18,7 @@ app.use(cors());
 // Set up PostgreSQL connection pool
 const pool = new Pool({
   user: "postgres",
-  host: "10.40.223.199",
+  host: "localhost",
   database: "postgres",
   password: "postgres",
   port: 5432,
@@ -123,6 +123,7 @@ app.get('/api/graph-data', async (req, res) => {
     // Parse JSON content for each row
     const formattedData = result.rows.map(row => {
       // Parse JSON content stored in the 'content' column
+      console.log(row)
       const content = JSON.parse(row.content);
 
       // Log each data point along with other details

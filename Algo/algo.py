@@ -11,7 +11,7 @@ logging.getLogger().setLevel(logging.INFO)
 def detect_earthquakes(dataframe : pd.DataFrame) -> List[float]:
     earthquake_start_times = []  # Output
     logging.info(f"Processing new job with {len(dataframe)} entries")
-    csv_times = np.array(dataframe['time_rel(sec)'].tolist())  
+    csv_times = np.array(dataframe['time_rel'].tolist())  
     csv_data = np.array(dataframe['velocity(m/s)'].tolist())
 
     time = csv_times

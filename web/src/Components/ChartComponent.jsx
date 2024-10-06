@@ -11,7 +11,7 @@ const ChartComponent = () => {
     // Fetch data from the API endpoint
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/graph-data');
+        const response = await axios.get('http://localhost:5001/api/graph-data');
         const graphData = response.data;
 
         // Assuming we want to plot data from the first file in the response

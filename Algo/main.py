@@ -1,7 +1,7 @@
 from lib.postgres.main import Postgres
 from dotenv import main as env
 import os, sys
-import redis
+import redis, json
 import logging
 from colorama import Fore, Style, init
 from algo import detect_earthquakes
@@ -76,10 +76,12 @@ def manual_run_all():
 # --- Main --- #
 # message processor
 def process_message(file_id):
+    file_id = file_id.strip()
     logging.info(f'{Fore.GREEN}Processing message: {message}{Fore.RESET}')
-    
-    
-    file_content = pd.read_json(pg_client.get_file_content(int(file_id))) # Read the file content from Postgres into a pandas dataframe
+    json_dat = pg_client.get_file_content(int(file_id))
+    json_dat = json.loads(json_dat)
+    file_content = pd.json_normalize(json_dat)
+    print(file_content)
     timestamps = detect_earthquakes(file_content) # Call the detect_earthquakes function from algo.py
     if len(timestamps) == 0:
         logging.info(f'{Fore.GREEN}No timestamps found{Fore.RESET}')
@@ -103,6 +105,7 @@ try:
             logging.info(f'{Fore.GREEN}Subscribed to channel: {message["channel"].decode("utf-8")}{Fore.RESET}')
         else:
             logging.info(f'{Fore.GREEN}Received message: {message}{Fore.RESET}')
+
 
 except KeyboardInterrupt:
     sys.exit(0)

@@ -46,6 +46,7 @@ class Postgres:
     
     def get_file_content(self, file_id):
         self.cur.execute(f"SELECT content FROM files WHERE id={file_id};")
-        return self.cur.fetchone()
+        res = self.cur.fetchone()
+        return res[0]
         
         
