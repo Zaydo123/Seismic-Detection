@@ -5,7 +5,7 @@ import '../Styles/Home.css'; // Import the CSS file
 const Home = () => {
     return (
         <div className="home-container">
-
+            
             <div className="navbar">
                 <Link to="/files" className="nav-link">Files</Link>
                 <Link to="/challenge" className="nav-link">Challenge</Link>
