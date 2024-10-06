@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import '../Styles/Files.css'; // Import the CSS file
+import '../Styles/Home.css'; // Import the CSS file
 // import ParticlesComponent from '../Components/ParticlesComponent.jsx';
 
 const Files = () => {
