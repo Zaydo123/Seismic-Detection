@@ -1,0 +1,263 @@
+/* Import Poppins font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+/* Reset default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    font-family: 'Poppins', sans-serif;
+    background-color: #000; /* Black background */
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    overflow-y: auto; /* Allow vertical scrolling */
+    position: relative;
+}
+
+/* Container styles */
+.home-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding-top: 3rem; /* Space for the navbar */
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    width: 100%; /* Ensure it takes the full width of the container */
+    min-height: 100vh; /* Make the content fill the viewport height */
+    padding-top: 5rem; /* Move content down */
+}
+
+/* Centered content for title and upload button */
+.centered-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Navbar styles */
+.navbar {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 1rem 2rem;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 10;
+    display: flex;
+    justify-content: flex-end;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.7);
+}
+
+.nav-link {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 1rem;
+    font-size: 1.2rem;
+    position: relative;
+    transition: color 0.3s;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    width: 0%;
+    height: 2px;
+    background-color: #ff4b2b;
+    transition: width 0.3s;
+}
+
+.nav-link:hover {
+    color: #ff4b2b;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+/* Title styles */
+.title {
+    font-size: 4rem;
+    text-align: center;
+    color: #fff;
+    text-shadow: 0 0 20px rgba(255, 75, 43, 0.7);
+    animation: pulseGlow 2s infinite;
+    margin-bottom: 2rem;
+}
+
+@keyframes pulseGlow {
+    0% {
+        text-shadow: 0 0 10px rgba(255, 75, 43, 0.7);
+    }
+    50% {
+        text-shadow: 0 0 30px rgba(255, 75, 43, 1);
+    }
+    100% {
+        text-shadow: 0 0 10px rgba(255, 75, 43, 0.7);
+    }
+}
+
+/* Upload button */
+.upload-button {
+    background: linear-gradient(45deg, #ff4b2b, #ff416c);
+    color: #fff;
+    padding: 0.9rem 1.8rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    margin-bottom: 1.5rem;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.upload-button:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 20px rgba(255, 75, 43, 0.6);
+}
+
+/* Uploaded files styles */
+.uploaded-files {
+    margin-top: 2rem;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the boxes */
+}
+
+.file-box {
+    background-color: #333;
+    width: 90%; /* Make the file box wider */
+    max-width: 1200px; /* Limit maximum width */
+    padding: 1.5rem 2rem; /* Add more padding */
+    margin: 1rem 0; /* Increase vertical spacing */
+    border-radius: 15px; /* Rounder corners */
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6), 0 0 15px rgba(255, 75, 43, 0.7);
+    border: 2px solid rgba(255, 75, 43, 0.5);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.file-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.8), 0 0 25px rgba(255, 75, 43, 1);
+}
+
+/* File info and buttons */
+.file-info {
+    display: flex;
+    flex-direction: column;
+    flex: 1; /* Allow the file info to take up available space */
+}
+
+.file-info p {
+    font-size: 1.2rem; /* Larger font size */
+    margin: 0.5rem 0; /* Add some spacing between lines */
+    line-height: 1.4; /* Increase line height for readability */
+}
+
+.file-box-buttons {
+    display: flex;
+}
+
+.file-box-buttons button {
+    background: linear-gradient(45deg, #24c6dc, #514a9d);
+    color: #fff;
+    border: none;
+    padding: 0.7rem 1.5rem; /* Adjust padding for a better button size */
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-left: 1rem; /* Add more spacing between buttons */
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.file-box-buttons button:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(36, 198, 220, 0.6);
+}
+
+
+/* Modal styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.75);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: #222;
+    padding: 2rem;
+    border-radius: 10px;
+    text-align: center;
+    color: #fff;
+    width: 90%;
+    max-width: 500px;
+}
+
+.modal-content h2 {
+    margin-bottom: 1rem;
+}
+
+.modal-content input[type="file"] {
+    margin-bottom: 1rem;
+}
+
+.modal-content button {
+    margin: 0.5rem;
+    padding: 0.7rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.modal-content button:first-of-type {
+    background-color: #28a745; /* Green */
+    color: #fff;
+}
+
+.modal-content button:last-of-type {
+    background-color: #dc3545; /* Red */
+    color: #fff;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 600px) {
+    .title {
+        font-size: 3rem;
+    }
+
+    .nav-link {
+        margin: 0 0.5rem;
+    }
+
+    .file-box {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .file-box-buttons {
+        margin-top: 1rem;
+        width: 100%;
+        justify-content: flex-end;
+    }
+}
