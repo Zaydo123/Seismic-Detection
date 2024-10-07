@@ -43,7 +43,7 @@ for index, row in cat.iloc[start_index:].iterrows():
 
     fs = 1 / delta_t.mean()  # Sampling frequency in Hz
     print(f"Processing file: {test_filename}")
-    print(f"Sampling frequency (fs): {fs} Hz")
+    # print(f"Sampling frequency (fs): {fs} Hz")
 
     # Create an Obspy Trace object
     trace = Trace()
